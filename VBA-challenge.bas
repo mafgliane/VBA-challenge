@@ -1,8 +1,8 @@
 Attribute VB_Name = "Module1"
 Sub Stock_Report():
 
-Dim lastRow, currentRow, outputRow, openValue, closeValue As Long
-Dim stockTotal, maxVolume As Double
+Dim lastRow, currentRow, outputRow As Long
+Dim stockTotal, maxVolume, openValue, closeValue As Double
 Dim yDelta, maxIncr, minIncr As Double
 Dim maxIncTicker, minIncTicker, maxVolTicker As String
 
@@ -20,7 +20,7 @@ Dim maxIncTicker, minIncTicker, maxVolTicker As String
         lastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
         
         outputRow = 2
-        currRow = 2
+        currrow = 2
         maxIncr = 0
         minIncr = 0
         maxVolume = 0
@@ -28,21 +28,21 @@ Dim maxIncTicker, minIncTicker, maxVolTicker As String
        
         
         'Get needed data per ticker tape name
-        Do While currRow < lastRow
+        Do While currrow <= lastRow
             
             If openValue = 0 Then
-                openValue = ws.Cells(currRow, 3).Value
+                openValue = ws.Cells(currrow, 3).Value
             End If
             
-            stockTotal = stockTotal + ws.Cells(currRow, 7).Value
+            stockTotal = stockTotal + ws.Cells(currrow, 7).Value
 
-            If ws.Cells(currRow, 1).Value <> ws.Cells(currRow + 1, 1).Value Then
+            If ws.Cells(currrow, 1).Value <> ws.Cells(currrow + 1, 1).Value Or currrow > lastRow Then
             
                 'Closing Price
-                closeValue = ws.Cells(currRow, 6).Value
+                closeValue = ws.Cells(currrow, 6).Value
             
                 'Ticker
-                ws.Cells(outputRow, 9).Value = ws.Cells(currRow, 1).Value
+                ws.Cells(outputRow, 9).Value = ws.Cells(currrow, 1).Value
             
                 'Yearly Change
                 ws.Cells(outputRow, 10).Value = closeValue - openValue
@@ -65,12 +65,12 @@ Dim maxIncTicker, minIncTicker, maxVolTicker As String
 
                 If maxIncr < yDelta Then
                     maxIncr = yDelta
-                    maxIncTicker = ws.Cells(currRow, 1).Value
+                    maxIncTicker = ws.Cells(currrow, 1).Value
                 End If
                 
                 If yDelta < minIncr Then
                     minIncr = yDelta
-                    minIncTicker = ws.Cells(currRow, 1).Value
+                    minIncTicker = ws.Cells(currrow, 1).Value
                 End If
 
                            
@@ -78,7 +78,7 @@ Dim maxIncTicker, minIncTicker, maxVolTicker As String
                 ws.Cells(outputRow, 12).Value = stockTotal
                 If maxVolume < stockTotal Then
                     maxVolume = stockTotal
-                    maxVolTicker = ws.Cells(currRow, 1).Value
+                    maxVolTicker = ws.Cells(currrow, 1).Value
                 End If
                                
                             
@@ -90,7 +90,7 @@ Dim maxIncTicker, minIncTicker, maxVolTicker As String
             End If
             
             'Advance to next row
-            currRow = currRow + 1
+            currrow = currrow + 1
         Loop
         
     'Write greatest values
@@ -115,10 +115,3 @@ Dim maxIncTicker, minIncTicker, maxVolTicker As String
     
     Next ws
 End Sub
-
-
-
-
-
-
-
